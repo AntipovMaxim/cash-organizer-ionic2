@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Balance</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item>
+    <ion-icon name="cash" item-left></ion-icon>
+    UAH
+    <ion-badge item-right>{{balanceData.balance.UAH}}</ion-badge>
+  </ion-item>
+  <ion-item>
+    <ion-icon name="logo-usd" item-left></ion-icon>
+    USD
+    <ion-badge item-right>{{balanceData.balance.USD}}</ion-badge>
+  </ion-item>
+  <ion-item>
+    <ion-icon name="logo-euro" item-left></ion-icon>
+    EUR
+    <ion-badge item-right>{{balanceData.balance.EUR}}</ion-badge>
+  </ion-item>
+  <div class="balance_buttons">
+    <button ion-button icon-right round block (click)="increaseBalance()">
+      Increase the balance
+      <ion-icon name="add"></ion-icon>
+
+    </button>
+    <button color="danger" ion-button icon-right round block (click)="decreaseBalance()">
+      Decrease the balance
+      <ion-icon name="remove"></ion-icon>
+    </button>
+    <button color="secondary" ion-button icon-right round block (click)="doExchange()">
+      Currency Exchange
+      <ion-icon name="swap"></ion-icon>
+    </button>
+  </div>
+
+  <ion-card>
+    <ion-card-header>
+      Here you can see report of yor balance
+    </ion-card-header>
+    <ion-card-content>
+      <div>
+        <ion-row responsive-sm>
+          <ion-list>
+            <ion-item *ngFor="let item of balanceData.balanceReport">
+              <p>Amount: {{item.money}} {{item.currency}}</p>
+              <p>Source: {{item.source}}</p>
+              <small>Date: {{item.date | date}}</small>
+            </ion-item>
+          </ion-list>
+        </ion-row>
+      </div>
+      <div *ngIf="(balance | async)?.balanceReport.length == 0 && !(balance | async).loading">
+        There are no profits... Please add
+      </div>
+    </ion-card-content>
+    <ion-spinner *ngIf="(balance | async).loading"></ion-spinner>
+  </ion-card>
+
+
+</ion-content>

@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Expenses Report</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-card>
+    <ion-card-header>
+      Here you can see report of yor expenses
+    </ion-card-header>
+    <ion-card-content>
+      <button ion-button (click)="fromDatePicker()">From: {{dateFrom}}</button>
+      <button ion-button (click)="toDatePicker()">To: {{dateTo}}</button>
+      <button ion-button color="secondary" (click)="getExpensesByDate()">FILTER</button>
+    <div>
+      <chart  [options]="options"></chart>
+      <ion-row responsive-sm>
+        <ion-list>
+          <ion-item *ngFor="let item of (lastExpenses | async)?.expenses">
+            <p>Category: {{item.category}}</p>
+            <p>Amount: {{item.money}} {{item.currency}}</p>
+            <p *ngIf="item.description">Description: {{item.description}}</p>
+            <small>Date: {{item.date | date}}</small>
+          </ion-item>
+        </ion-list>
+      </ion-row>
+    </div>
+    <div *ngIf="(lastExpenses | async)?.expenses.length == 0 && !(lastExpenses | async).loading">
+        There are no expenses... Please add one at least
+    </div>
+      </ion-card-content>
+    <ion-spinner *ngIf="(lastExpenses | async).loading"></ion-spinner>
+    </ion-card>
+
+    <button *ngIf="(lastExpenses | async).loadMoreButton && expensesData.length !== 0" ion-button (click)="loadMore()"
+          color="primary" block>Load more.. </button>
+
+</ion-content>

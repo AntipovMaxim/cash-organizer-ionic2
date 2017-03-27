@@ -1,0 +1,42 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>increase-balance-form</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+    <form class="form" #form="ngForm">
+      <ion-item>
+        <ion-label color="primary">Currency</ion-label>
+        <ion-select ngModel  name="currency" required>
+          <ion-option value="UAH" selected="true">UAH</ion-option>
+          <ion-option value="USD" >USD</ion-option>
+          <ion-option value="EUR" >EUR</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label floating color="primary">Money</ion-label>
+        <ion-input type="number" ngModel  name="money" required
+                   pattern="^[0-9]+$"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating color="primary">Source</ion-label>
+        <ion-input type="text" ngModel  name="source" required></ion-input>
+      </ion-item>
+    </form>
+
+    <ion-buttons class="buttons">
+      <button ion-button color="danger" (click)="dismiss()">
+        Cancel
+      </button>
+      <button [disabled]="!form.valid" ion-button color="primary" (click)="updateTotalMoney(form)">
+        Save
+      </button>
+    </ion-buttons>
+
+</ion-content>
