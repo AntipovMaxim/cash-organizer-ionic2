@@ -3,16 +3,16 @@ import {Store} from '@ngrx/store'
 
 import {Platform, MenuController, Nav} from 'ionic-angular';
 
-import {StatusBar, Splashscreen, Push} from 'ionic-native';
+import {StatusBar, Splashscreen} from 'ionic-native';
 
 import {MainPage} from '../pages/main/main';
 import {LoginPage} from '../pages/login/login';
 import {BalancePage} from '../pages/balance/balance';
 import {ReportPage} from '../pages/report/report';
-// import {
-//     Push,
-//     PushToken
-// } from '@ionic/cloud-angular';
+import {
+    Push,
+    PushToken
+} from '@ionic/cloud-angular';
 
 // import { Push, PushObject, PushOptions } from '@ionic-native/push';
 
@@ -24,7 +24,7 @@ import {authState, CHECK_AUTH} from '../reducers/auth.reducer';
 // declare var PushNotification: any;
 
 
-declare var FCMPlugin;
+// declare var FCMPlugin;
 
 
 @Component({
@@ -41,7 +41,8 @@ export class MyApp {
 
     constructor(public platform: Platform,
                 public menu: MenuController,
-                private store: Store<authState>) {
+                private store: Store<authState>,
+    public push: Push) {
         this.store.dispatch({type: CHECK_AUTH});
         this.initializeApp();
         this.authInfo = this.store.select('auth');
@@ -55,39 +56,39 @@ export class MyApp {
 
         ];
 
-        // this.push.register()
-        //     .then((t) => {
-        //     return this.push.saveToken(t);
-        // }).then((t: PushToken) => {
-        //     console.log('Token saved:', t.token);
-        // });
-        //
-        // this.push.rx.notification()
-        //     .subscribe((msg) => {
-        //         alert(msg.title + ': ' + msg.text);
-        //     });
+        this.push.register()
+            .then((t) => {
+            return this.push.saveToken(t);
+        }).then((t: PushToken) => {
+            console.log('Token saved:', t.token);
+        });
+
+        this.push.rx.notification()
+            .subscribe((msg) => {
+                alert(msg.title + ': ' + msg.text);
+            });
 
 
     }
     initPushNotification(){
 
-        if (typeof FCMPlugin != 'undefined') {
-            FCMPlugin.getToken((token) => {
-                console.log("TOKRN", token);
-            }, (error) => {
-                console.log('error retrieving token: ' + error);
-            });
-
-            FCMPlugin.onNotification(function(data){
-                if(data.wasTapped){
-                    //Notification was received on device tray and tapped by the user.
-                    alert(JSON.stringify(data));
-                }else{
-                    //Notification was received in foreground. Maybe the user needs to be notified.
-                    alert(JSON.stringify(data));
-                }
-            });
-        }
+        // if (typeof FCMPlugin != 'undefined') {
+        //     FCMPlugin.getToken((token) => {
+        //         console.log("TOKRN", token);
+        //     }, (error) => {
+        //         console.log('error retrieving token: ' + error);
+        //     });
+        //
+        //     FCMPlugin.onNotification(function(data){
+        //         if(data.wasTapped){
+        //             //Notification was received on device tray and tapped by the user.
+        //             alert(JSON.stringify(data));
+        //         }else{
+        //             //Notification was received in foreground. Maybe the user needs to be notified.
+        //             alert(JSON.stringify(data));
+        //         }
+        //     });
+        // }
         // let push = PushNotification.init({
         //     android: {
         //         senderID: "853086407371"
