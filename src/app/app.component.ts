@@ -71,9 +71,10 @@ export class MyApp {
     }
     initPushNotification(){
 
+
         if (typeof FCMPlugin != 'undefined') {
             FCMPlugin.getToken((token) => {
-                console.log("TOKRN", token);
+                console.log("TOKeN", token);
             }, (error) => {
                 console.log('error retrieving token: ' + error);
             });
