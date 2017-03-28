@@ -3,7 +3,7 @@ import {Store} from '@ngrx/store'
 
 import {Platform, MenuController, Nav} from 'ionic-angular';
 
-import {StatusBar, Splashscreen} from 'ionic-native';
+import {StatusBar, Splashscreen, Push} from 'ionic-native';
 
 import {MainPage} from '../pages/main/main';
 import {LoginPage} from '../pages/login/login';
@@ -18,9 +18,13 @@ import {ReportPage} from '../pages/report/report';
 
 
 
-
+//Когда юзер логаут удалять с базы девайс токен. отправлять только актуальным девайсам. Сабскрайбить изминения
 
 import {authState, CHECK_AUTH} from '../reducers/auth.reducer';
+// declare var PushNotification: any;
+
+
+declare var FCMPlugin;
 
 
 @Component({
@@ -33,6 +37,7 @@ export class MyApp {
     rootPage: any;
     pages: Array<{title: string, component: any}>;
     authInfo;
+    notif;
 
     constructor(public platform: Platform,
                 public menu: MenuController,
@@ -62,9 +67,51 @@ export class MyApp {
         //         alert(msg.title + ': ' + msg.text);
         //     });
 
-        this.initPushNotification();
+
     }
     initPushNotification(){
+
+        if (typeof FCMPlugin != 'undefined') {
+            FCMPlugin.getToken((token) => {
+                console.log("TOKRN", token);
+            }, (error) => {
+                console.log('error retrieving token: ' + error);
+            });
+
+            FCMPlugin.onNotification(function(data){
+                if(data.wasTapped){
+                    //Notification was received on device tray and tapped by the user.
+                    alert(JSON.stringify(data));
+                }else{
+                    //Notification was received in foreground. Maybe the user needs to be notified.
+                    alert(JSON.stringify(data));
+                }
+            });
+        }
+        // let push = PushNotification.init({
+        //     android: {
+        //         senderID: "853086407371"
+        //     },
+        //     ios: {
+        //         alert: "true",
+        //         badge: true,
+        //         sound: 'false'
+        //     },
+        //     windows: {}
+        // });
+        //
+        // push.on('registration', (data) => {
+        //     console.log("DEVICE ID",data.registrationId);
+        // });
+        //
+        // push.on('notification', (data) => {
+        //     alert(data.message);
+        //
+        // });
+        //
+        // push.on('error', (e) => {
+        //     console.log(e.message);
+        // });
         // if (!this.platform.is('cordova')) {
         //     console.warn("Push notifications not initialized. Cordova is not available - Run in physical device");
         //     return;
@@ -87,7 +134,7 @@ export class MyApp {
         // });
         // push.on('notification', (data) => {
         //     console.log('message', data.message);
-        //     let self = this;
+        //    // let self = this;
         //     //if user using app and push notification comes
         //     if (data.additionalData.foreground) {
         //         // if application open, show popup
@@ -110,7 +157,7 @@ export class MyApp {
         //     } else {
         //         //if user NOT using app and push notification comes
         //         //TODO: Your logic on click of push notification directly
-        //         self.nav.push(MainPage, {message: data.message});
+        //         this.nav.push(ReportPage, {message: data.message});
         //         console.log("Push notification clicked");
         //     }
         // });
@@ -120,7 +167,9 @@ export class MyApp {
 
         // const options: PushOptions = {
         //     android: {
-        //         senderID: '853086407371'
+        //         senderID: '853086407371',
+        //         vibrate: 'true',
+        //         sound: 'true'
         //     },
         //     ios: {
         //         alert: 'true',
@@ -129,10 +178,14 @@ export class MyApp {
         //     },
         //     windows: {}
         // };
-
+        //
         // const pushObject: PushObject = this.push.init(options);
         //
-        // pushObject.on('notification').subscribe(notification => console.log('Received a notification', notification));
+        // let notification$ = pushObject.on('notification');
+        // notification$.subscribe(notification => {
+        //     this.notif = notification;
+        //     alert(this.notif.title)
+        // });
         //
         // pushObject.on('registration').subscribe(registration => console.log('Device registered', registration));
         //
@@ -146,6 +199,7 @@ export class MyApp {
             // Here you can do any higher level native things you might need.
             StatusBar.styleDefault();
             Splashscreen.hide();
+            this.initPushNotification();
         });
 
 

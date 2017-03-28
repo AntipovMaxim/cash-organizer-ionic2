@@ -25,6 +25,8 @@ import { root } from '../reducers/root.reducer';
 
 import { firebaseConfig } from '../config/firebase';
 
+import { Push, PushObject, PushOptions } from '@ionic-native/push';
+
 import {
   CloudSettings,
   CloudModule
@@ -87,6 +89,6 @@ const cloudSettings: CloudSettings = {
     CostFormPage,
     IncreaseBalanceFormPage
   ],
-  providers: [WrongDataService]
+  providers: [WrongDataService, Push]
 })
 export class AppModule {}

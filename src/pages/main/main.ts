@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController,  ModalController } from 'ionic-angular';
+import { NavController,  ModalController, Platform } from 'ionic-angular';
 import { Store } from '@ngrx/store'
 
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
@@ -22,10 +22,14 @@ export class MainPage {
 
   constructor(public navCtrl: NavController,
               af: AngularFire, private store: Store<authState>,
-              public modalCtrl: ModalController) {
+              public modalCtrl: ModalController,
+              public platform: Platform) {
         this.categories = categories;
         this.lastExpenses = this.store.select('expenses');
-
+    this.platform = platform;
+  }
+  exitApp(){
+    this.platform.exitApp();
   }
 
   doLogout() {
