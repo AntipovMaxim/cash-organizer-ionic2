@@ -30,6 +30,7 @@ export class MainPage {
   }
   exitApp(){
     this.platform.exitApp();
+    console.log("GIT");
   }
 
   doLogout() {
