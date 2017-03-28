@@ -30,7 +30,7 @@ export class MainPage {
   }
   exitApp(){
     this.platform.exitApp();
-    console.log("DEV")
+    console.log("Master")
   }
 
   doLogout() {
