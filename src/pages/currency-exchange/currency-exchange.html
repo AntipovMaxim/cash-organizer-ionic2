@@ -7,44 +7,44 @@
 
 <ion-content padding>
 
-    <form class="form" #form="ngForm">
-      <h6>FROM:</h6>
-      <ion-item>
-        <ion-label color="primary">Currency</ion-label>
-        <ion-select ngModel  name="currency_from" required>
-          <ion-option value="UAH" selected="true">UAH</ion-option>
-          <ion-option value="USD" >USD</ion-option>
-          <ion-option value="EUR" >EUR</ion-option>
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-label floating color="primary">Money</ion-label>
-        <ion-input type="number" ngModel  name="money_from" required
-                   pattern="^[0-9]+$"></ion-input>
-      </ion-item>
-      <h6>TO:</h6>
-      <ion-item>
-        <ion-label color="primary">Currency</ion-label>
-        <ion-select ngModel  name="currency_to" required>
-          <ion-option value="UAH" selected="true">UAH</ion-option>
-          <ion-option value="USD" >USD</ion-option>
-          <ion-option value="EUR" >EUR</ion-option>
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-label floating color="primary">Money</ion-label>
-        <ion-input type="number" ngModel  name="money_to" required
-                   pattern="^[0-9]+$"></ion-input>
-      </ion-item>
-    </form>
+  <form class="form" #form="ngForm">
+    <h6>FROM:</h6>
+    <ion-item>
+      <ion-label color="primary">Currency</ion-label>
+      <ion-select ngModel  name="currency_from" required>
+        <ion-option value="UAH" selected="true">UAH</ion-option>
+        <ion-option value="USD" >USD</ion-option>
+        <ion-option value="EUR" >EUR</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label floating color="primary">Money</ion-label>
+      <ion-input type="number" ngModel  name="money_from" required
+                 pattern="^[0-9]+$"></ion-input>
+    </ion-item>
+    <h6>TO:</h6>
+    <ion-item>
+      <ion-label color="primary">Currency</ion-label>
+      <ion-select ngModel  name="currency_to" required>
+        <ion-option value="UAH" selected="true">UAH</ion-option>
+        <ion-option value="USD" >USD</ion-option>
+        <ion-option value="EUR" >EUR</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label floating color="primary">Money</ion-label>
+      <ion-input type="number" ngModel  name="money_to" required
+                 pattern="^[0-9]+$"></ion-input>
+    </ion-item>
+  </form>
 
-    <ion-buttons class="buttons">
-      <button ion-button color="danger" (click)="dismiss()">
-        Cancel
-      </button>
-      <button [disabled]="!form.valid" ion-button color="primary" (click)="doExchange(form)">
-        Save
-      </button>
-    </ion-buttons>
+  <ion-buttons class="buttons">
+    <button ion-button color="danger" (click)="dismiss()">
+      Cancel
+    </button>
+    <button [disabled]="!form.valid" ion-button color="primary" (click)="doExchange(form)">
+      Save
+    </button>
+  </ion-buttons>
 
 </ion-content>

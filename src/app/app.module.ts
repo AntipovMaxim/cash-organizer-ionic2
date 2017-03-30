@@ -13,6 +13,7 @@ import { ReportPage } from '../pages/report/report';
 import { CurrencyExchangePage } from '../pages/currency-exchange/currency-exchange';
 import { CostFormPage } from '../pages/cost-form/cost-form';
 import { IncreaseBalanceFormPage } from '../pages/increase-balance-form/increase-balance-form';
+
 import { Device } from '@ionic-native/device';
 
 import { authEffects } from '../effects/auth.effects';
