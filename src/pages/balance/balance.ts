@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, MenuController  } from 'ionic-angular';
 import { IncreaseBalanceFormPage } from '../increase-balance-form/increase-balance-form';
 import { CurrencyExchangePage } from '../currency-exchange/currency-exchange';
 import { Store } from '@ngrx/store'
@@ -17,6 +17,7 @@ export class BalancePage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public modalCtrl: ModalController,
+              public menuCtrl: MenuController,
   private store: Store<any>) {
     this.store.dispatch({type: GET_BALANCE_REPORT});
     this.balance = this.store.select('balance');
@@ -26,6 +27,9 @@ export class BalancePage {
     })
 
   }
+  toggle(){
+  this.menuCtrl.open();
+}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad BalancePage');
@@ -46,8 +50,6 @@ export class BalancePage {
     modal.present();
   }
 
-  doExchange(){
-    this.navCtrl.push(CurrencyExchangePage, {balanceData: this.balanceData.balance});
-  }
+
 
 }

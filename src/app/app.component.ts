@@ -1,7 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {Store} from '@ngrx/store'
 
-import {Platform, MenuController, Nav} from 'ionic-angular';
+import {Platform, MenuController, Nav, NavController, App} from 'ionic-angular';
 
 import {StatusBar, Splashscreen} from 'ionic-native';
 import { Device } from '@ionic-native/device';
@@ -10,6 +10,7 @@ import {MainPage} from '../pages/main/main';
 import {LoginPage} from '../pages/login/login';
 import {BalancePage} from '../pages/balance/balance';
 import {ReportPage} from '../pages/report/report';
+import { CurrencyExchangePage } from '../pages/currency-exchange/currency-exchange';
 import {
     Push,
     PushToken
@@ -33,7 +34,7 @@ import {authState, CHECK_AUTH} from '../reducers/auth.reducer';
     templateUrl: 'app.html'
 })
 export class MyApp {
-    @ViewChild(Nav) nav: Nav;
+    @ViewChild('content') nav: Nav;
 
     // make HelloIonicPage the root (or first) page
     rootPage: any;
@@ -48,7 +49,9 @@ export class MyApp {
                 private store: Store<authState>,
                 public push: Push,
                 public pushService: PushNotificationService,
-                public device: Device) {
+                public device: Device,
+                public appCtrl: App
+                ) {
         this.store.dispatch({type: CHECK_AUTH});
         this.initializeApp();
         this.authInfo = this.store.select('auth');
@@ -59,7 +62,8 @@ export class MyApp {
         this.pages = [
             {title: 'Make Budget Expenses', component: MainPage},
             {title: 'Balance', component: BalancePage},
-            {title: 'Expenses Report', component: ReportPage}
+            {title: 'Expenses Report', component: ReportPage},
+            {title: 'Currency Exchange', component: CurrencyExchangePage}
 
         ];
 
@@ -78,6 +82,7 @@ export class MyApp {
 
 
 
+
         this.push.rx.notification()
             .subscribe((msg) => {
                 alert(msg.title + ': ' + msg.text);
@@ -86,6 +91,8 @@ export class MyApp {
 
 
     }
+
+
 
     initPushNotification() {
 
@@ -228,7 +235,7 @@ export class MyApp {
         // close the menu when clicking a link from the menu
         this.menu.close();
         // navigate to the new page if it is not the current page
-        this.nav.setRoot(page.component);
+        this.appCtrl.getRootNav().push(page.component);
     }
 
 
