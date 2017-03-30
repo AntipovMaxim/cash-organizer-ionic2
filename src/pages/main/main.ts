@@ -8,6 +8,8 @@ import { authState, LOGOUT } from '../../reducers/auth.reducer';
 import { GET_BALANCE } from '../../reducers/balance.reducer';
 import { categories } from '../../mock/categories';
 import { CostFormPage } from '../cost-form/cost-form'
+import { PushNotificationService } from '../../providers/push.notifications';
+
 
 @Component({
   selector: 'main',
@@ -23,7 +25,8 @@ export class MainPage {
   constructor(public navCtrl: NavController,
               af: AngularFire, private store: Store<authState>,
               public modalCtrl: ModalController,
-              public platform: Platform) {
+              public platform: Platform,
+  public pushService: PushNotificationService) {
         this.categories = categories;
         this.lastExpenses = this.store.select('expenses');
     this.platform = platform;
@@ -48,7 +51,11 @@ export class MainPage {
     this.store.dispatch({type: GET_BALANCE});
   }
 
-
+ // sendNotification(){
+ //
+ //    this.pushService.sendNotification('Antipov', 'Children').subscribe(v => console.log(v))
+ //    console.log('push')
+ // }
 
 
 }
