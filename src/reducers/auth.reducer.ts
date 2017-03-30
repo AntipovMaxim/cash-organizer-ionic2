@@ -21,13 +21,15 @@ export const intitialState = {
     authChecked: false,
     currentUser: null,
     loading: false,
-    currentCreds: null
+    currentCreds: null,
+    uid: null
 }
 
 export interface authState {
     authChecked: boolean,
     currentUser: any,
-    loading: boolean
+    uid: any,
+    loading: boolean,
     error?: any,
     currentCreds: any
 };
@@ -55,7 +57,7 @@ export const authReducer: ActionReducer<authState> =
             }
 
             case LOGOUT_SUCCESS: {
-                return Object.assign({}, intitialState, { authChecked: true })
+                return Object.assign({}, intitialState, { authChecked: true, uid: null, currentUser: null  })
             }
 
             case LOGOUT_FAILED: {
@@ -66,7 +68,7 @@ export const authReducer: ActionReducer<authState> =
             }
 
             case CHECK_AUTH_SUCCESS: {
-                return Object.assign({}, state, { currentUser: action.payload, authChecked: true, loading: false })
+                return Object.assign({}, state, { currentUser: action.payload, authChecked: true, loading: false, uid: action.payload.uid })
             }
             case CHECK_AUTH_FAILED: {
                 return Object.assign({}, state, { error: action.payload, currentUser: null, authChecked: true, loading: false })

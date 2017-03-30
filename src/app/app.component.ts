@@ -3,19 +3,20 @@ import {Store} from '@ngrx/store'
 
 import {Platform, MenuController, Nav} from 'ionic-angular';
 
-import {StatusBar, Splashscreen, Push} from 'ionic-native';
+import {StatusBar, Splashscreen} from 'ionic-native';
+import { Device } from '@ionic-native/device';
 
 import {MainPage} from '../pages/main/main';
 import {LoginPage} from '../pages/login/login';
 import {BalancePage} from '../pages/balance/balance';
 import {ReportPage} from '../pages/report/report';
-// import {
-//     Push,
-//     PushToken
-// } from '@ionic/cloud-angular';
+import {
+    Push,
+    PushToken
+} from '@ionic/cloud-angular';
+import { PushNotificationService } from '../providers/push.notifications';
 
 // import { Push, PushObject, PushOptions } from '@ionic-native/push';
-
 
 
 //Когда юзер логаут удалять с базы девайс токен. отправлять только актуальным девайсам. Сабскрайбить изминения
@@ -24,7 +25,8 @@ import {authState, CHECK_AUTH} from '../reducers/auth.reducer';
 // declare var PushNotification: any;
 
 
-declare var FCMPlugin;
+// declare var FCMPlugin;
+
 
 
 @Component({
@@ -38,14 +40,20 @@ export class MyApp {
     pages: Array<{title: string, component: any}>;
     authInfo;
     notif;
+    uid;
+    currentToken: string;
 
     constructor(public platform: Platform,
                 public menu: MenuController,
-                private store: Store<authState>) {
+                private store: Store<authState>,
+                public push: Push,
+                public pushService: PushNotificationService,
+                public device: Device) {
         this.store.dispatch({type: CHECK_AUTH});
         this.initializeApp();
         this.authInfo = this.store.select('auth');
-
+        //device id
+        console.log('Device UUID is: ' + this.device.uuid);
 
         // set our app's pages
         this.pages = [
@@ -55,40 +63,49 @@ export class MyApp {
 
         ];
 
-        // this.push.register()
-        //     .then((t) => {
-        //     return this.push.saveToken(t);
-        // }).then((t: PushToken) => {
-        //     console.log('Token saved:', t.token);
-        // });
-        //
-        // this.push.rx.notification()
-        //     .subscribe((msg) => {
-        //         alert(msg.title + ': ' + msg.text);
-        //     });
+
+
+
+        this.push.register()
+            .then((t) => {
+                return this.push.saveToken(t);
+            }).then((t: PushToken) => {
+            console.log('Token saved:', t.token);
+            console.log('Token:', t);
+            this.currentToken = t.token;
+            //this.pushService.updateToken(this.uid, this.device.uuid, t.token);
+        });
+
+
+
+        this.push.rx.notification()
+            .subscribe((msg) => {
+                alert(msg.title + ': ' + msg.text);
+                console.log('Notification', msg)
+            });
 
 
     }
-    initPushNotification(){
 
+    initPushNotification() {
 
-        if (typeof FCMPlugin != 'undefined') {
-            FCMPlugin.getToken((token) => {
-                console.log("TOKeN", token);
-            }, (error) => {
-                console.log('error retrieving token: ' + error);
-            });
-
-            FCMPlugin.onNotification(function(data){
-                if(data.wasTapped){
-                    //Notification was received on device tray and tapped by the user.
-                    alert(JSON.stringify(data));
-                }else{
-                    //Notification was received in foreground. Maybe the user needs to be notified.
-                    alert(JSON.stringify(data));
-                }
-            });
-        }
+        // if (typeof FCMPlugin != 'undefined') {
+        //     FCMPlugin.getToken((token) => {
+        //         console.log("TOKRN", token);
+        //     }, (error) => {
+        //         console.log('error retrieving token: ' + error);
+        //     });
+        //
+        //     FCMPlugin.onNotification(function(data){
+        //         if(data.wasTapped){
+        //             //Notification was received on device tray and tapped by the user.
+        //             alert(JSON.stringify(data));
+        //         }else{
+        //             //Notification was received in foreground. Maybe the user needs to be notified.
+        //             alert(JSON.stringify(data));
+        //         }
+        //     });
+        // }
         // let push = PushNotification.init({
         //     android: {
         //         senderID: "853086407371"
@@ -200,7 +217,7 @@ export class MyApp {
             // Here you can do any higher level native things you might need.
             StatusBar.styleDefault();
             Splashscreen.hide();
-            this.initPushNotification();
+            //this.initPushNotification();
         });
 
 
@@ -214,10 +231,37 @@ export class MyApp {
         this.nav.setRoot(page.component);
     }
 
+
     ngOnInit() {
         this.authInfo.subscribe(a => {
+
             if (a.authChecked) {
-                this.rootPage = (a.currentUser ? MainPage : LoginPage);
+                console.log(typeof this.currentToken)
+                this.uid = a.uid;
+                if(a.currentUser){
+                    this.push.register()
+                        .then((t) => {
+                            return this.push.saveToken(t);
+                        }).then((t: PushToken) => {
+                        console.log('Token saved:', t.token);
+                        console.log('Token:', t);
+
+                        this.pushService.updateToken(this.uid, this.device.uuid, t.token);
+                    });
+
+
+
+                    // this.push.rx.notification()
+                    //     .subscribe((msg) => {
+                    //         alert(msg.title + ': ' + msg.text);
+                    //         console.log('Notification', msg)
+                    //     });
+
+                    this.rootPage = MainPage
+                }else{
+                    this.rootPage = LoginPage
+                }
+                //this.rootPage = (a.currentUser ? MainPage : LoginPage);
             }
         });
     }

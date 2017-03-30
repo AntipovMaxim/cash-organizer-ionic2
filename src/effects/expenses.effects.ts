@@ -14,10 +14,9 @@ import {
     FILTER_COSTS_FAILED
 
 } from '../reducers/expenses.reducer';
-import firebase from "firebase";
+import firebase from "firebase"
 
-
-
+import { PushNotificationService } from '../providers/push.notifications';
 
 
 import { Injectable } from "@angular/core";
@@ -33,7 +32,8 @@ export class expensesEffects {
     uid;
     lastValue;
 
-    constructor(private action$: Actions, public af: AngularFire, public store: Store<any>) {
+    constructor(private action$: Actions, public af: AngularFire, public store: Store<any>,
+    private push: PushNotificationService) {
         this.authInfo = this.store.select('auth');
         this.authInfo.subscribe(v => {
             if(v.currentUser) this.uid = v.currentUser.uid;
@@ -187,6 +187,7 @@ export class expensesEffects {
             s.push(data)
                 .then(items => {
                     console.log("Success", data)
+                    this.push.sendNotification(data.category, data.money, this.uid, info.tokens).subscribe();
                     observer.next({ type: ADD_COST_SUCCESS, payload: data })
                 }, (error) => {
                     console.log(' ERROR: ' + error);
