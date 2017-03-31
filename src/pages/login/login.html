@@ -48,10 +48,10 @@
 
     <ion-row responsive-sm>
       <ion-col>
-        <button [disabled]="!loginForm.valid" ion-button (click)="doLogin(loginForm)" type="submit" color="primary" block>Login</button>
+        <button [disabled]="!loginForm.valid" ion-button (tap)="doLogin(loginForm)" type="submit" color="primary" block>Login</button>
       </ion-col>
       <ion-col>
-        <button [disabled]="!loginForm.valid" ion-button (click)="doCreateUser(loginForm)" type="submit" color="primary" block>Create user</button>
+        <button [disabled]="!loginForm.valid" ion-button (tap)="doCreateUser(loginForm)" type="submit" color="primary" block>Create user</button>
       </ion-col>
     </ion-row>
 

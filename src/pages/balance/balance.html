@@ -1,14 +1,15 @@
+
 <ion-header>
   <ion-toolbar>
     <ion-navbar>
       <ion-title text-center>Balance</ion-title>
-    </ion-navbar>
+      </ion-navbar>
     <ion-buttons end>
       <button ion-button menuToggle>
         <ion-icon name="menu"></ion-icon>
       </button>
     </ion-buttons>
-  </ion-toolbar>
+    </ion-toolbar>
 </ion-header>
 
 
@@ -29,12 +30,12 @@
     <ion-badge item-right>{{balanceData.balance.EUR}}</ion-badge>
   </ion-item>
   <div class="balance_buttons">
-    <button ion-button icon-right round block (click)="increaseBalance()">
+    <button ion-button icon-right round block (tap)="increaseBalance()">
       Increase the balance
       <ion-icon name="add"></ion-icon>
 
     </button>
-    <button color="secondary" ion-button icon-right round block (click)="decreaseBalance()">
+    <button color="secondary" ion-button icon-right round block (tap)="decreaseBalance()">
       Decrease the balance
       <ion-icon name="remove"></ion-icon>
     </button>

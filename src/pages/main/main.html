@@ -14,7 +14,7 @@
 
 <ion-content padding>
   <ion-list>
-    <button ion-item *ngFor="let category of categories" (click)="addCost(category.title)">
+    <button ion-item *ngFor="let category of categories" (tap)="addCost(category.title)">
       <ion-avatar item-left>
         <img [src]="category.src">
       </ion-avatar>

@@ -47,10 +47,10 @@
   </form>
 
   <ion-buttons class="buttons">
-    <button round ion-button color="secondary" (click)="dismiss()">
+    <button round ion-button color="secondary" (tap)="dismiss()">
       Cancel
     </button>
-    <button round [disabled]="!form.valid" ion-button color="primary" (click)="doExchange(form)">
+    <button round [disabled]="!form.valid" ion-button color="primary" (tap)="doExchange(form)">
       Save
     </button>
   </ion-buttons>
