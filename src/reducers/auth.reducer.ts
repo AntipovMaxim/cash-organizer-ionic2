@@ -1,4 +1,4 @@
-import { ActionReducer, Action } from "@ngrx/store";
+import {ActionReducer, Action} from "@ngrx/store";
 
 
 export const LOGIN: string = "LOGIN";
@@ -18,78 +18,84 @@ export const CHECK_AUTH_FAILED: string = "CHECK_AUTH_FAILED";
 
 
 export const intitialState = {
-    authChecked: false,
-    currentUser: null,
-    loading: false,
-    currentCreds: null,
-    uid: null
+  authChecked: false,
+  currentUser: null,
+  loading: false,
+  currentCreds: null,
+  uid: null
 }
 
 export interface authState {
-    authChecked: boolean,
-    currentUser: any,
-    uid: any,
-    loading: boolean,
-    error?: any,
-    currentCreds: any
-};
+  authChecked: boolean,
+  currentUser: any,
+  uid: any,
+  loading: boolean,
+  error?: any,
+  currentCreds: any
+}
+;
 
 
 export const authReducer: ActionReducer<authState> =
-    (state = intitialState, action: Action) => {
+  (state = intitialState, action: Action) => {
 
-        switch (action.type) {
+    switch (action.type) {
 
-            case LOGIN: {
-                return Object.assign({}, state, { currentCreds: action.payload, loading: true })
-            }
+      case LOGIN: {
+        return Object.assign({}, state, {currentCreds: action.payload, loading: true})
+      }
 
-            case LOGIN_SUCCESS: {
-                return Object.assign({}, state, { currentUser: action.payload, currentCreds: null, error: null, loading: false })
-            }
+      case LOGIN_SUCCESS: {
+        return Object.assign({}, state, {currentUser: action.payload, currentCreds: null, error: null, loading: false})
+      }
 
-            case LOGIN_FAILED: {
-                return Object.assign({}, state, { error: action.payload, currentUser: null, authChecked: true, loading: false })
-            }
+      case LOGIN_FAILED: {
+        return Object.assign({}, state, {error: action.payload, currentUser: null, authChecked: true, loading: false})
+      }
 
-            case LOGOUT: {
-                return Object.assign({}, state, { loading: true })
-            }
+      case LOGOUT: {
+        return Object.assign({}, state, {loading: true})
+      }
 
-            case LOGOUT_SUCCESS: {
-                return Object.assign({}, intitialState, { authChecked: true, uid: null, currentUser: null  })
-            }
+      case LOGOUT_SUCCESS: {
+        return Object.assign({}, intitialState, {authChecked: true, uid: null, currentUser: null})
+      }
 
-            case LOGOUT_FAILED: {
-                return Object.assign({}, state, { error: action.payload, loading: false })
-            }
-            case CHECK_AUTH: {
-                return Object.assign({}, state, { loading: true })
-            }
+      case LOGOUT_FAILED: {
+        return Object.assign({}, state, {error: action.payload, loading: false})
+      }
+      case CHECK_AUTH: {
+        return Object.assign({}, state, {loading: true})
+      }
 
-            case CHECK_AUTH_SUCCESS: {
-                return Object.assign({}, state, { currentUser: action.payload, authChecked: true, loading: false, uid: action.payload.uid })
-            }
-            case CHECK_AUTH_FAILED: {
-                return Object.assign({}, state, { error: action.payload, currentUser: null, authChecked: true, loading: false })
-            }
-            case CHECK_AUTH_NO_USER: {
-                return Object.assign({}, state, { currentUser: null, authChecked: true, loading: false })
-            }
+      case CHECK_AUTH_SUCCESS: {
+        return Object.assign({}, state, {
+          currentUser: action.payload,
+          authChecked: true,
+          loading: false,
+          uid: action.payload.uid
+        })
+      }
+      case CHECK_AUTH_FAILED: {
+        return Object.assign({}, state, {error: action.payload, currentUser: null, authChecked: true, loading: false})
+      }
+      case CHECK_AUTH_NO_USER: {
+        return Object.assign({}, state, {currentUser: null, authChecked: true, loading: false})
+      }
 
-            //
-            case CREATE_USER: {
-                return Object.assign({}, state, { currentCreds: action.payload, loading: true })
-            }
+      //
+      case CREATE_USER: {
+        return Object.assign({}, state, {currentCreds: action.payload, loading: true})
+      }
 
-            case CREATE_USER_SUCCESS: {
-                return Object.assign({}, state, { currentUser: action.payload, authChecked: true, loading: false })
-            }
-            case CREATE_USER_FAILED: {
-                return Object.assign({}, state, { error: action.payload, currentUser: null, authChecked: true, loading: false })
-            }
-            default: {
-                return state;
-            }
-        }
-    };
+      case CREATE_USER_SUCCESS: {
+        return Object.assign({}, state, {currentUser: action.payload, authChecked: true, loading: false})
+      }
+      case CREATE_USER_FAILED: {
+        return Object.assign({}, state, {error: action.payload, currentUser: null, authChecked: true, loading: false})
+      }
+      default: {
+        return state;
+      }
+    }
+  };

@@ -1,277 +1,109 @@
 import {Component, ViewChild} from '@angular/core';
 import {Store} from '@ngrx/store'
-
-import {Platform, MenuController, Nav, NavController, App} from 'ionic-angular';
-
+import {Platform, MenuController, Nav, App, AlertController} from 'ionic-angular';
 import {StatusBar, Splashscreen} from 'ionic-native';
-import { Device } from '@ionic-native/device';
-
+import {Device} from '@ionic-native/device';
 import {MainPage} from '../pages/main/main';
 import {LoginPage} from '../pages/login/login';
 import {BalancePage} from '../pages/balance/balance';
 import {ReportPage} from '../pages/report/report';
-import { CurrencyExchangePage } from '../pages/currency-exchange/currency-exchange';
-import { StatisticsPage } from '../pages/statistics/statistics';
+import {CurrencyExchangePage} from '../pages/currency-exchange/currency-exchange';
+import {StatisticsPage} from '../pages/statistics/statistics';
 import {
-    Push,
-    PushToken
+  Push,
+  PushToken
 } from '@ionic/cloud-angular';
-import { PushNotificationService } from '../providers/push.notifications';
-
-// import { Push, PushObject, PushOptions } from '@ionic-native/push';
-
-
-//Когда юзер логаут удалять с базы девайс токен. отправлять только актуальным девайсам. Сабскрайбить изминения
-
+import {PushNotificationService} from '../providers/push.notifications';
 import {authState, CHECK_AUTH} from '../reducers/auth.reducer';
-// declare var PushNotification: any;
-
-
-// declare var FCMPlugin;
-
-
 
 @Component({
-    templateUrl: 'app.html'
+  templateUrl: 'app.html'
 })
 export class MyApp {
-    @ViewChild('content') nav: Nav;
+  @ViewChild('content') nav: Nav;
 
-    // make HelloIonicPage the root (or first) page
-    rootPage: any;
-    pages: Array<{title: string, component: any}>;
-    authInfo;
-    notif;
-    uid;
-    currentToken: string;
+  rootPage: any;
+  pages: Array<{title: string, component: any}>;
+  authInfo;
+  uid: string;
+  currentToken: string;
 
-    constructor(public platform: Platform,
-                public menu: MenuController,
-                private store: Store<authState>,
-                public push: Push,
-                public pushService: PushNotificationService,
-                public device: Device,
-                public appCtrl: App
-                ) {
-        this.store.dispatch({type: CHECK_AUTH});
-        this.initializeApp();
-        this.authInfo = this.store.select('auth');
-        //device id
-        console.log('Device UUID is: ' + this.device.uuid);
-
-        // set our app's pages
-        this.pages = [
-            {title: 'Make Budget Expenses', component: MainPage},
-            {title: 'Balance', component: BalancePage},
-            {title: 'Expenses Report', component: ReportPage},
-            {title: 'Currency Exchange', component: CurrencyExchangePage},
-            {title: 'Statistics', component: StatisticsPage}
-
-        ];
+  constructor(public platform: Platform,
+              public menu: MenuController,
+              private store: Store<authState>,
+              public push: Push,
+              public pushService: PushNotificationService,
+              public device: Device,
+              public appCtrl: App,
+              private alertCtrl: AlertController) {
+    this.store.dispatch({type: CHECK_AUTH});
+    this.initializeApp();
+    this.authInfo = this.store.select('auth');
 
 
+    // set our app's pages
+    this.pages = [
+      {title: 'Make Budget Expenses', component: MainPage},
+      {title: 'Balance', component: BalancePage},
+      {title: 'Expenses Report', component: ReportPage},
+      {title: 'Currency Exchange', component: CurrencyExchangePage},
+      {title: 'Statistics', component: StatisticsPage}
+
+    ];
+
+    this.push.register()
+      .then((t) => {
+        return this.push.saveToken(t);
+      }).then((t: PushToken) => {
+      this.currentToken = t.token;
+    });
+
+    this.push.rx.notification()
+      .subscribe((msg) => {
+          let alert = this.alertCtrl.create({
+            title: msg.title,
+            subTitle: msg.text,
+            buttons: ['OK']
+          });
+          alert.present();
+
+      });
+  }
+
+  initializeApp() {
+    this.platform.ready().then(() => {
+      StatusBar.styleDefault();
+      Splashscreen.hide();
+    });
+  }
 
 
-        this.push.register()
+  openPage(page) {
+    // close the menu when clicking a link from the menu
+    this.menu.close();
+    // navigate to the new page if it is not the current page
+    this.appCtrl.getRootNav().push(page.component);
+  }
+
+
+  ngOnInit() {
+    this.authInfo.subscribe(a => {
+
+      if (a.authChecked) {
+        this.uid = a.uid;
+        if (a.currentUser) {
+          this.push.register()
             .then((t) => {
-                return this.push.saveToken(t);
+              return this.push.saveToken(t);
             }).then((t: PushToken) => {
-            console.log('Token saved:', t.token);
-            console.log('Token:', t);
-            this.currentToken = t.token;
-            //this.pushService.updateToken(this.uid, this.device.uuid, t.token);
-        });
+            this.pushService.updateToken(this.uid, this.device.uuid, t.token);
+          });
 
-
-
-
-        this.push.rx.notification()
-            .subscribe((msg) => {
-                alert(msg.title + ': ' + msg.text);
-                console.log('Notification', msg)
-            });
-
-
-    }
-
-
-
-    initPushNotification() {
-
-        // if (typeof FCMPlugin != 'undefined') {
-        //     FCMPlugin.getToken((token) => {
-        //         console.log("TOKRN", token);
-        //     }, (error) => {
-        //         console.log('error retrieving token: ' + error);
-        //     });
-        //
-        //     FCMPlugin.onNotification(function(data){
-        //         if(data.wasTapped){
-        //             //Notification was received on device tray and tapped by the user.
-        //             alert(JSON.stringify(data));
-        //         }else{
-        //             //Notification was received in foreground. Maybe the user needs to be notified.
-        //             alert(JSON.stringify(data));
-        //         }
-        //     });
-        // }
-        // let push = PushNotification.init({
-        //     android: {
-        //         senderID: "853086407371"
-        //     },
-        //     ios: {
-        //         alert: "true",
-        //         badge: true,
-        //         sound: 'false'
-        //     },
-        //     windows: {}
-        // });
-        //
-        // push.on('registration', (data) => {
-        //     console.log("DEVICE ID",data.registrationId);
-        // });
-        //
-        // push.on('notification', (data) => {
-        //     alert(data.message);
-        //
-        // });
-        //
-        // push.on('error', (e) => {
-        //     console.log(e.message);
-        // });
-        // if (!this.platform.is('cordova')) {
-        //     console.warn("Push notifications not initialized. Cordova is not available - Run in physical device");
-        //     return;
-        // }
-        // let push = Push.init({
-        //     android: {
-        //         senderID: "853086407371"
-        //     },
-        //     ios: {
-        //         alert: "true",
-        //         badge: false,
-        //         sound: "true"
-        //     },
-        //     windows: {}
-        // });
-        //
-        // push.on('registration', (data) => {
-        //     console.log("device token ->", data.registrationId);
-        //     //TODO - send device token to server
-        // });
-        // push.on('notification', (data) => {
-        //     console.log('message', data.message);
-        //    // let self = this;
-        //     //if user using app and push notification comes
-        //     if (data.additionalData.foreground) {
-        //         // if application open, show popup
-        //         // let confirmAlert = this.alertCtrl.create({
-        //         //     title: 'New Notification',
-        //         //     message: data.message,
-        //         //     buttons: [{
-        //         //         text: 'Ignore',
-        //         //         role: 'cancel'
-        //         //     }, {
-        //         //         text: 'View',
-        //         //         handler: () => {
-        //         //             //TODO: Your logic here
-        //         //             self.nav.push(DetailsPage, {message: data.message});
-        //         //         }
-        //         //     }]
-        //         // });
-        //         // confirmAlert.present();
-        //         alert(data.message);
-        //     } else {
-        //         //if user NOT using app and push notification comes
-        //         //TODO: Your logic on click of push notification directly
-        //         this.nav.push(ReportPage, {message: data.message});
-        //         console.log("Push notification clicked");
-        //     }
-        // });
-        // push.on('error', (e) => {
-        //     console.log(e.message);
-        // });
-
-        // const options: PushOptions = {
-        //     android: {
-        //         senderID: '853086407371',
-        //         vibrate: 'true',
-        //         sound: 'true'
-        //     },
-        //     ios: {
-        //         alert: 'true',
-        //         badge: true,
-        //         sound: 'false'
-        //     },
-        //     windows: {}
-        // };
-        //
-        // const pushObject: PushObject = this.push.init(options);
-        //
-        // let notification$ = pushObject.on('notification');
-        // notification$.subscribe(notification => {
-        //     this.notif = notification;
-        //     alert(this.notif.title)
-        // });
-        //
-        // pushObject.on('registration').subscribe(registration => console.log('Device registered', registration));
-        //
-        // pushObject.on('error').subscribe(error => console.error('Error with Push plugin', error));
-    }
-
-    initializeApp() {
-
-        this.platform.ready().then(() => {
-            // Okay, so the platform is ready and our plugins are available.
-            // Here you can do any higher level native things you might need.
-            StatusBar.styleDefault();
-            Splashscreen.hide();
-            //this.initPushNotification();
-        });
-
-
-    }
-
-
-    openPage(page) {
-        // close the menu when clicking a link from the menu
-        this.menu.close();
-        // navigate to the new page if it is not the current page
-        this.appCtrl.getRootNav().push(page.component);
-    }
-
-
-    ngOnInit() {
-        this.authInfo.subscribe(a => {
-
-            if (a.authChecked) {
-                console.log(typeof this.currentToken)
-                this.uid = a.uid;
-                if(a.currentUser){
-                    this.push.register()
-                        .then((t) => {
-                            return this.push.saveToken(t);
-                        }).then((t: PushToken) => {
-                        console.log('Token saved:', t.token);
-                        console.log('Token:', t);
-
-                        this.pushService.updateToken(this.uid, this.device.uuid, t.token);
-                    });
-
-
-
-                    // this.push.rx.notification()
-                    //     .subscribe((msg) => {
-                    //         alert(msg.title + ': ' + msg.text);
-                    //         console.log('Notification', msg)
-                    //     });
-
-                    this.rootPage = MainPage
-                }else{
-                    this.rootPage = LoginPage
-                }
-                //this.rootPage = (a.currentUser ? MainPage : LoginPage);
-            }
-        });
-    }
+          this.rootPage = MainPage
+        } else {
+          this.rootPage = LoginPage
+        }
+      }
+    });
+  }
 }

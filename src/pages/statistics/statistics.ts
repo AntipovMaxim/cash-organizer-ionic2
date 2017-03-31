@@ -1,10 +1,6 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
 import {Store} from '@ngrx/store'
-import {AngularFire, FirebaseListObservable} from 'angularfire2';
 import {DatePicker} from 'ionic-native';
-import * as moment from "moment";
-
 
 import {FILTER_COSTS} from '../../reducers/expenses.reducer';
 
@@ -23,23 +19,12 @@ export class StatisticsPage {
   tableData;
   totalSum: number = 0;
 
-  constructor(public navCtrl: NavController,
-              public navParams: NavParams,
-              private store: Store<any>,
-              private af: AngularFire) {
+  constructor(private store: Store<any>,) {
 
     this.statistics$ = this.store.select('expenses');
     this.statistics$.subscribe(v => {
       this.statisticsData = v.expensesStatistics
     });
-
-  }
-
-  ionViewDidLoad() {
-    // console.log('this.expensesData', this.expensesData);
-    // if (!this.expensesData.length) {
-    //   this.store.dispatch({type: GET_LATEST_COSTS})
-    // }
 
   }
 
@@ -80,8 +65,6 @@ export class StatisticsPage {
   }
 
   getOptions() {
-    // this.new = (data.countNew/data.totalCount) * 100;
-    // this.learned = 100 - this.new;
     console.log(this.optionsData)
     return {
       chart: {
@@ -135,14 +118,14 @@ export class StatisticsPage {
   }
 
   finalDataforTable(o) {
-    console.log('O',o)
+    console.log('O', o)
     let arr = [];
     let totalSum = 0;
     for (let key in o) {
       totalSum += o[key];
     }
     for (let key in o) {
-      arr.push({category: key, money:o[key]})
+      arr.push({category: key, money: o[key]})
     }
     return arr;
   }
