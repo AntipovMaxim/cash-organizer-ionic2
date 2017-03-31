@@ -23,8 +23,8 @@
       <ion-row responsive-sm>
         <ion-list>
           <ion-item *ngFor="let item of (lastExpenses | async)?.expenses">
-            <p>Category: {{item.category}}</p>
-            <p>Amount: {{item.money}} {{item.currency}}</p>
+            <p><span class="report_category">Category:</span> {{item.category}}</p>
+            <p> <span class="report_money">Amount:</span> {{item.money}} {{item.currency}}</p>
             <p *ngIf="item.description">Description: {{item.description}}</p>
             <small>Date: {{item.date | date}}</small>
           </ion-item>
@@ -38,7 +38,8 @@
     <ion-spinner *ngIf="(lastExpenses | async).loading"></ion-spinner>
     </ion-card>
 
-    <button *ngIf="(lastExpenses | async).loadMoreButton && expensesData.length !== 0" ion-button (click)="loadMore()"
+    <button *ngIf="(lastExpenses | async).loadMoreButton && expensesData.length !== 0" ion-button round
+            (click)="loadMore()"
           color="primary" block>Load more.. </button>
 
 </ion-content>

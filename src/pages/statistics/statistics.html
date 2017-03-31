@@ -19,9 +19,9 @@
   </ion-card-header>
 
 
-  <button ion-button (click)="fromDatePicker()">From: {{(statistics$ | async).from}}</button>
-  <button ion-button (click)="toDatePicker()">To: {{(statistics$ | async).to}}</button>
-  <button ion-button color="secondary" (click)="getExpensesByDate()">FILTER</button>
+  <button ion-button round block color="light" (click)="fromDatePicker()">From: {{(statistics$ | async).from}}</button>
+  <button ion-button round block color="light" (click)="toDatePicker()">To: {{(statistics$ | async).to}}</button>
+  <button ion-button round block color="secondary" (click)="getExpensesByDate()">FILTER</button>
   <ion-spinner *ngIf="(statistics$ | async).loading"></ion-spinner>
   <div *ngIf="!(statistics$ | async).loading">
     <div *ngIf="(statistics$ | async).expensesStatistics.length">

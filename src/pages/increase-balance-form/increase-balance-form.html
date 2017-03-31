@@ -2,7 +2,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>increase-balance-form</ion-title>
+    <ion-title text-center>Fill the form</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -31,10 +31,10 @@
     </form>
 
     <ion-buttons class="buttons">
-      <button ion-button color="danger" (click)="dismiss()">
+      <button ion-button round color="secondary" (click)="dismiss()">
         Cancel
       </button>
-      <button [disabled]="!form.valid" ion-button color="primary" (click)="updateTotalMoney(form)">
+      <button [disabled]="!form.valid" round ion-button color="primary" (click)="updateTotalMoney(form)">
         Save
       </button>
     </ion-buttons>
