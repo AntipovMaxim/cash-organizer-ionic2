@@ -85,8 +85,8 @@ export class expensesEffects {
       })
         .map(v => v.reverse())
         .subscribe(items => {
-          console.log(items)
-          observer.next({type: FILTER_COSTS_SUCCESS, payload: items})
+          console.log("FILTER",items)
+          observer.next({type: FILTER_COSTS_SUCCESS, payload: {data: items, from: creds.from, to: creds.to}})
         }, (error) => {
           console.log(' ERROR: ' + error);
           observer.next({type: FILTER_COSTS_FAILED, payload: error})

@@ -13,6 +13,7 @@ import { ReportPage } from '../pages/report/report';
 import { CurrencyExchangePage } from '../pages/currency-exchange/currency-exchange';
 import { CostFormPage } from '../pages/cost-form/cost-form';
 import { IncreaseBalanceFormPage } from '../pages/increase-balance-form/increase-balance-form';
+import { StatisticsPage } from '../pages/statistics/statistics';
 
 import { Device } from '@ionic-native/device';
 
@@ -61,7 +62,8 @@ const cloudSettings: CloudSettings = {
     ReportPage,
     CurrencyExchangePage,
     CostFormPage,
-    IncreaseBalanceFormPage
+    IncreaseBalanceFormPage,
+    StatisticsPage
 
   ],
   imports: [
@@ -90,7 +92,8 @@ const cloudSettings: CloudSettings = {
     ReportPage,
     CurrencyExchangePage,
     CostFormPage,
-    IncreaseBalanceFormPage
+    IncreaseBalanceFormPage,
+    StatisticsPage
   ],
   providers: [WrongDataService, Push, PushNotificationService, Device]
 })
