@@ -58,6 +58,7 @@ export class MyApp {
       this.currentToken = t.token;
     });
 
+
     this.push.rx.notification()
       .subscribe((msg) => {
           let alert = this.alertCtrl.create({
