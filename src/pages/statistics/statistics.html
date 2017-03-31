@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-navbar>
+      <ion-title text-center>Statistics</ion-title>
+    </ion-navbar>
+    <ion-buttons end>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-card-header>
+    Here you can see report of yor expenses
+  </ion-card-header>
+
+
+  <button ion-button (click)="fromDatePicker()">From: {{(statistics$ | async).from}}</button>
+  <button ion-button (click)="toDatePicker()">To: {{(statistics$ | async).to}}</button>
+  <button ion-button color="secondary" (click)="getExpensesByDate()">FILTER</button>
+  <ion-spinner *ngIf="(statistics$ | async).loading"></ion-spinner>
+  <div *ngIf="!(statistics$ | async).loading">
+    <div *ngIf="(statistics$ | async).expensesStatistics.length">
+      <ion-row>
+        <ion-col><h5>Category</h5></ion-col>
+        <ion-col><h5>Sum</h5></ion-col>
+      </ion-row>
+      <ion-row *ngFor="let item of tableData">
+        <ion-col>{{item.category}}</ion-col>
+        <ion-col>{{item.money}} UAH </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col><strong>Total</strong></ion-col>
+        <ion-col>{{totalSum}} UAH</ion-col>
+      </ion-row>
+    </div>
+    <chart [options]="options"></chart>
+  </div>
+
+</ion-content>

@@ -19,11 +19,7 @@
       Here you can see report of yor expenses
     </ion-card-header>
     <ion-card-content>
-      <button ion-button (click)="fromDatePicker()">From: {{dateFrom}}</button>
-      <button ion-button (click)="toDatePicker()">To: {{dateTo}}</button>
-      <button ion-button color="secondary" (click)="getExpensesByDate()">FILTER</button>
     <div>
-      <chart  [options]="options"></chart>
       <ion-row responsive-sm>
         <ion-list>
           <ion-item *ngFor="let item of (lastExpenses | async)?.expenses">
