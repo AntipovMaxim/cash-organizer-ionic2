@@ -1,6 +1,6 @@
 export const categories = [
   {
-    title: 'Products',
+    title: 'Food',
     src: 'http://missbagira.ru/images/bagira/2015/01/ghjlerns.jpg'
   },
   {

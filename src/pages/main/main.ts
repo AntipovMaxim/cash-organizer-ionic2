@@ -2,9 +2,9 @@ import {Component} from '@angular/core';
 import {ModalController, Platform} from 'ionic-angular';
 import {Store} from '@ngrx/store'
 
-import {AngularFire, FirebaseListObservable} from 'angularfire2';
+import {FirebaseListObservable} from 'angularfire2';
 
-import {authState, LOGOUT} from '../../reducers/auth.reducer';
+import {authState} from '../../reducers/auth.reducer';
 import {GET_BALANCE} from '../../reducers/balance.reducer';
 import {categories} from '../../mock/categories';
 import {CostFormPage} from '../cost-form/cost-form'
@@ -32,9 +32,6 @@ export class MainPage {
     this.platform.exitApp();
   }
 
-  doLogout() {
-    this.store.dispatch({type: LOGOUT});
-  }
 
   addCost(category) {
     let modal = this.modalCtrl.create(CostFormPage, {title: category});

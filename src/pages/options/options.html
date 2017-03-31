@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-navbar>
+      <ion-title text-center>Options</ion-title>
+    </ion-navbar>
+    <ion-buttons end>
+      <button ion-button menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-row class="row">
+    <ion-col><div class="item"><h5>Close:</h5></div></ion-col>
+    <ion-col>
+      <ion-buttons  end>
+        <button ion-button icon-only (tap)="doLogout()" >
+          <ion-icon name="checkmark"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-col>
+  </ion-row>
+</ion-content>

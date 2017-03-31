@@ -14,6 +14,7 @@ import { CurrencyExchangePage } from '../pages/currency-exchange/currency-exchan
 import { CostFormPage } from '../pages/cost-form/cost-form';
 import { IncreaseBalanceFormPage } from '../pages/increase-balance-form/increase-balance-form';
 import { StatisticsPage } from '../pages/statistics/statistics';
+import { OptionsPage } from '../pages/options/options';
 
 import { Device } from '@ionic-native/device';
 
@@ -28,7 +29,7 @@ import { root } from '../reducers/root.reducer';
 
 import { firebaseConfig } from '../config/firebase';
 
-import { Push, PushObject, PushOptions } from '@ionic-native/push';
+import { Push } from '@ionic-native/push';
 
 import {
   CloudSettings,
@@ -63,7 +64,8 @@ const cloudSettings: CloudSettings = {
     CurrencyExchangePage,
     CostFormPage,
     IncreaseBalanceFormPage,
-    StatisticsPage
+    StatisticsPage,
+    OptionsPage
 
   ],
   imports: [
@@ -93,7 +95,8 @@ const cloudSettings: CloudSettings = {
     CurrencyExchangePage,
     CostFormPage,
     IncreaseBalanceFormPage,
-    StatisticsPage
+    StatisticsPage,
+    OptionsPage
   ],
   providers: [WrongDataService, Push, PushNotificationService, Device]
 })

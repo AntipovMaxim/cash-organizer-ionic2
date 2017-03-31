@@ -9,6 +9,7 @@ import {BalancePage} from '../pages/balance/balance';
 import {ReportPage} from '../pages/report/report';
 import {CurrencyExchangePage} from '../pages/currency-exchange/currency-exchange';
 import {StatisticsPage} from '../pages/statistics/statistics';
+import {OptionsPage} from '../pages/options/options';
 import {
   Push,
   PushToken
@@ -47,7 +48,8 @@ export class MyApp {
       {title: 'Balance', component: BalancePage},
       {title: 'Expenses Report', component: ReportPage},
       {title: 'Currency Exchange', component: CurrencyExchangePage},
-      {title: 'Statistics', component: StatisticsPage}
+      {title: 'Statistics', component: StatisticsPage},
+      {title: 'Options', component: OptionsPage}
 
     ];
 
