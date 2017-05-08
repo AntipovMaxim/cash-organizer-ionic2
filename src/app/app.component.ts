@@ -6,7 +6,7 @@ import {Device} from '@ionic-native/device';
 import {MainPage} from '../pages/main/main';
 import {LoginPage} from '../pages/login/login';
 import {BalancePage} from '../pages/balance/balance';
-import {ReportPage} from '../pages/report/report';
+//import {ReportPage} from '../pages/report/report';
 import {CurrencyExchangePage} from '../pages/currency-exchange/currency-exchange';
 import {StatisticsPage} from '../pages/statistics/statistics';
 import {OptionsPage} from '../pages/options/options';
@@ -16,6 +16,9 @@ import {
 } from '@ionic/cloud-angular';
 import {PushNotificationService} from '../providers/push.notifications';
 import {authState, CHECK_AUTH} from '../reducers/auth.reducer';
+// import {Network} from '@ionic-native/network';
+
+
 
 @Component({
   templateUrl: 'app.html'
@@ -46,9 +49,9 @@ export class MyApp {
     this.pages = [
       {title: 'Make Budget Expenses', component: MainPage},
       {title: 'Balance', component: BalancePage},
-      {title: 'Expenses Report', component: ReportPage},
+      // {title: 'Expenses Report', component: ReportPage},
       {title: 'Currency Exchange', component: CurrencyExchangePage},
-      {title: 'Statistics', component: StatisticsPage},
+      {title: 'Statistics & Report', component: StatisticsPage},
       {title: 'Options', component: OptionsPage}
 
     ];
@@ -63,12 +66,12 @@ export class MyApp {
 
     this.push.rx.notification()
       .subscribe((msg) => {
-          let alert = this.alertCtrl.create({
-            title: msg.title,
-            subTitle: msg.text,
-            buttons: ['OK']
-          });
-          alert.present();
+        let alert = this.alertCtrl.create({
+          title: msg.title,
+          subTitle: msg.text,
+          buttons: ['OK']
+        });
+        alert.present();
 
       });
   }
@@ -87,6 +90,10 @@ export class MyApp {
     // navigate to the new page if it is not the current page
     this.appCtrl.getRootNav().push(page.component);
   }
+
+  // ionViewDidLoad(){
+  //   alert(this.network.type);
+  // }
 
 
   ngOnInit() {

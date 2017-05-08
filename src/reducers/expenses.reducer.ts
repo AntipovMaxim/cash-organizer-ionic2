@@ -15,6 +15,7 @@ export const FILTER_COSTS = 'FILTER_COSTS';
 export const FILTER_COSTS_SUCCESS = 'FILTER_COSTS_SUCCESS';
 export const FILTER_COSTS_FAILED = 'FILTER_COSTS_FAILED';
 
+import * as moment from 'moment';
 
 export const intitialState = {
   loading: false,
@@ -22,8 +23,8 @@ export const intitialState = {
   currentCreds: null,
   loadMoreButton: false,
   expensesStatistics: [],
-  from: '',
-  to: ''
+  from: moment().format('YYYY-MM-DD'),
+  to: moment().format('YYYY-MM-DD')
 };
 
 export interface expensesState {

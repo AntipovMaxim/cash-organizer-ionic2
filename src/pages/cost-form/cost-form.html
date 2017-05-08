@@ -7,6 +7,14 @@
 
 
 <ion-content padding>
+  <ion-item>
+    <ion-label><span class="statistic_peroid">Date</span></ion-label>
+    <ion-icon name="md-calendar" item-right></ion-icon>
+    <ion-datetime  pickerFormat="DD.MM.YYYY" [(ngModel)]="expensesDate"></ion-datetime>
+  </ion-item>
+  <p></p>
+  <p></p>
+  <p></p>
   <form class="form" #form="ngForm">
     <ion-item>
       <ion-label color="primary">Currency</ion-label>

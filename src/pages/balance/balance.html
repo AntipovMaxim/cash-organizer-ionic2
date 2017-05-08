@@ -42,27 +42,28 @@
 
   </div>
 
-  <ion-card>
-    <ion-card-header>
+  <div>
+    <h6>
       Here you can see report of yor balance
-    </ion-card-header>
-    <ion-card-content>
-      <div>
-        <ion-row responsive-sm>
-          <ion-list>
-            <ion-item *ngFor="let item of balanceData.balanceReport">
-              <p>Amount: {{item.money}} {{item.currency}}</p>
-              <p>Source: {{item.source}}</p>
-              <small>Date: {{item.date | date}}</small>
-            </ion-item>
+    </h6>
+
+      <div class="balance_data">
+        <ion-row responsive-lg>
+          <ion-list >
+            <div *ngFor="let item of balanceData_" >
+              <p class="date_balance">Date: {{item.date}}</p>
+              <ion-item *ngFor="let source of item.sources" >
+                <p><span>{{source.source}}:</span> {{source.money}} {{source.currency}}</p>
+              </ion-item>
+            </div>
           </ion-list>
         </ion-row>
       </div>
       <div *ngIf="(balance | async)?.balanceReport.length == 0 && !(balance | async).loading">
         There are no profits... Please add
       </div>
-    </ion-card-content>
+
     <ion-spinner *ngIf="(balance | async).loading"></ion-spinner>
-  </ion-card>
+  </div>
 
 </ion-content>

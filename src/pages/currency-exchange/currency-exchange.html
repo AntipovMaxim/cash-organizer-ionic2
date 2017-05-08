@@ -55,4 +55,30 @@
     </button>
   </ion-buttons>
 
+  <h6>Currency exchange of Private Bank</h6>
+  <ion-row class="currency_tabla_head">
+    <ion-col>
+      <strong>Currency</strong>
+    </ion-col>
+    <ion-col>
+      <strong>Buy</strong>
+    </ion-col>
+    <ion-col>
+      <strong>Sale</strong>
+    </ion-col>
+  </ion-row>
+
+  <ion-row *ngFor="let item of currencyEx">
+    <ion-col>
+      <strong>{{item.ccy}}</strong>
+    </ion-col>
+    <ion-col>
+      {{item.buy}}
+    </ion-col>
+    <ion-col>
+      {{item.sale}}
+    </ion-col>
+  </ion-row>
+
+
 </ion-content>

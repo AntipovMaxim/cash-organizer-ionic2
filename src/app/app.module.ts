@@ -9,7 +9,6 @@ import { MyApp } from './app.component';
 import { MainPage } from '../pages/main/main';
 import { LoginPage } from '../pages/login/login';
 import { BalancePage } from '../pages/balance/balance';
-import { ReportPage } from '../pages/report/report';
 import { CurrencyExchangePage } from '../pages/currency-exchange/currency-exchange';
 import { CostFormPage } from '../pages/cost-form/cost-form';
 import { IncreaseBalanceFormPage } from '../pages/increase-balance-form/increase-balance-form';
@@ -24,7 +23,9 @@ import { balanceEffects } from '../effects/balance.effects';
 import { tokensEffects } from '../effects/tokens.effects';
 import { AngularFireModule } from 'angularfire2';
 import { WrongDataService } from '../providers/alert.wrong.data';
+import { ParseDataService } from '../providers/parse.data';
 import { PushNotificationService } from '../providers/push.notifications';
+import { CurrencyExchangeService } from '../providers/currency.exchange';
 import { root } from '../reducers/root.reducer';
 
 import { firebaseConfig } from '../config/firebase';
@@ -60,7 +61,6 @@ const cloudSettings: CloudSettings = {
     MainPage,
     LoginPage,
     BalancePage,
-    ReportPage,
     CurrencyExchangePage,
     CostFormPage,
     IncreaseBalanceFormPage,
@@ -91,13 +91,12 @@ const cloudSettings: CloudSettings = {
     MainPage,
     LoginPage,
     BalancePage,
-    ReportPage,
     CurrencyExchangePage,
     CostFormPage,
     IncreaseBalanceFormPage,
     StatisticsPage,
     OptionsPage
   ],
-  providers: [WrongDataService, Push, PushNotificationService, Device]
+  providers: [WrongDataService, Push, PushNotificationService, Device, ParseDataService, CurrencyExchangeService]
 })
 export class AppModule {}

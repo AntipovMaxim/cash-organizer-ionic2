@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-navbar>
-      <ion-title text-center>Statistics</ion-title>
+      <ion-title class="test" text-center>Statistics</ion-title>
     </ion-navbar>
     <ion-buttons end>
       <button ion-button menuToggle>
@@ -15,12 +15,21 @@
 <ion-content padding>
 
   <ion-card-header>
-    Here you can see report of yor expenses
+    Here you can see report of your expenses
   </ion-card-header>
-
-
-  <button ion-button round block color="light" (click)="fromDatePicker()">From: {{(statistics$ | async).from}}</button>
-  <button ion-button round block color="light" (click)="toDatePicker()">To: {{(statistics$ | async).to}}</button>
+  <ion-item>
+    <ion-label><span class="statistic_peroid">From:</span></ion-label>
+    <ion-icon name="md-calendar" item-right></ion-icon>
+    <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="myDateFrom"></ion-datetime>
+  </ion-item>
+  <p></p>
+  <p></p>
+  <ion-item>
+    <ion-label><span class="statistic_peroid">To:</span></ion-label>
+    <ion-icon name="md-calendar" item-right></ion-icon>
+    <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="myDateTo"></ion-datetime>
+  </ion-item>
+  <p></p>
   <button ion-button round block color="secondary" (click)="getExpensesByDate()">FILTER</button>
   <ion-spinner *ngIf="(statistics$ | async).loading"></ion-spinner>
   <div *ngIf="!(statistics$ | async).loading">
@@ -39,7 +48,21 @@
         <ion-col>{{totalSum}} UAH</ion-col>
       </ion-row>
     </div>
-    <chart [options]="options"></chart>
+    <chart *ngIf="statisticsData.length !== 0" [options]="options"></chart>
   </div>
 
+
+  <div class="expenses_data">
+    <ion-row responsive-lg>
+      <ion-list>
+        <div *ngFor="let item of expensesData_" >
+          <p class="date_balance">Date: {{item.date}}</p>
+          <ion-item *ngFor="let source of item.sources" >
+            <p><span>{{source.category}} :</span> {{source.money}} {{source.currency}}</p>
+            <p *ngIf="source.description"><span>description:</span> {{source.description}}</p>
+          </ion-item>
+        </div>
+      </ion-list>
+    </ion-row>
+  </div>
 </ion-content>

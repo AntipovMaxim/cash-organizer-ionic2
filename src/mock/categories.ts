@@ -1,30 +1,30 @@
 export const categories = [
   {
     title: 'Food',
-    src: 'http://missbagira.ru/images/bagira/2015/01/ghjlerns.jpg'
+    src: 'https://firebasestorage.googleapis.com/v0/b/cash-e73cc.appspot.com/o/food.jpg?alt=media&token=feb7dee1-eaeb-42eb-a36a-c62c1136bce1'
   },
   {
     title: 'Clothing',
-    src: 'http://www.gnldneolife.net/wp-content/uploads/2017/01/Clothing-Fabric-3.jpg'
+    src: 'https://firebasestorage.googleapis.com/v0/b/cash-e73cc.appspot.com/o/clothing.png?alt=media&token=c8c366be-8c5f-4bf5-bad0-4e4a0e2c443b'
   },
   {
     title: 'Entertainment',
-    src: 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQAKXei_ZvT3-UvR6shaV1_caSdlH_RdHvCPgFXVfeJoJF0vVV7'
+    src: 'https://firebasestorage.googleapis.com/v0/b/cash-e73cc.appspot.com/o/entertainment.png?alt=media&token=e1f31a59-9a36-4da3-8d29-463fd6da9ebc'
 
   },
   {
     title: 'Children',
-    src: 'http://files.kritisk-information.webnode.se/200000831-8b0278bf7c/children-playing-on-grass.jpg'
+    src: 'https://firebasestorage.googleapis.com/v0/b/cash-e73cc.appspot.com/o/children.png?alt=media&token=8422e6e5-deb7-4c6b-8305-aea09281247d'
 
   },
   {
     title: 'Utilities',
-    src: 'http://nikopol.net.ua/uploads/images/17520.jpeg'
+    src: 'https://firebasestorage.googleapis.com/v0/b/cash-e73cc.appspot.com/o/utilities.png?alt=media&token=c6434070-31db-43d4-9720-aedb42f07d72'
 
   },
   {
     title: 'Other',
-    src: 'http://www.cuboyo.com/images/categories/other.png'
+    src: 'https://firebasestorage.googleapis.com/v0/b/cash-e73cc.appspot.com/o/other.png?alt=media&token=0e65d498-71e4-459c-ad46-c99cea69904f'
 
   }
-]
+];

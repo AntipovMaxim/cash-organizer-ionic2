@@ -46,7 +46,6 @@ export class expensesEffects {
     });
 
   doAddExpenses(info) {
-    let date = new Date();
     const data = {
       category: info.category,
       money: info.data.money,
@@ -54,7 +53,7 @@ export class expensesEffects {
       //date: firebase.database.ServerValue.TIMESTAMP
       currency: info.data.currency,
       date: Date.now(),
-      day: `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`
+      day: info.date
     };
     return Observable.create((observer) => {
       var s: any = this.af.database.list(`/${this.uid}/expenses`);
@@ -80,7 +79,7 @@ export class expensesEffects {
     return Observable.create((observer) => {
       this.af.database.list(`/${this.uid}/expenses`, {
         preserveSnapshot: false, query: {
-          limitToLast: 4,
+          limitToLast: 20,
         }
       })
         .map(v => v.reverse())
@@ -89,10 +88,10 @@ export class expensesEffects {
             this.lastValue = items[items.length - 1].date;
           }
 
-          if (items.length < 4) {
-            observer.next({type: GET_LATEST_COSTS_SUCCESS_COMPLETE, payload: items.slice(0, 3)})
+          if (items.length < 20) {
+            observer.next({type: GET_LATEST_COSTS_SUCCESS_COMPLETE, payload: items.slice(0, 19)})
           } else {
-            observer.next({type: GET_LATEST_COSTS_SUCCESS, payload: items.slice(0, 3)})
+            observer.next({type: GET_LATEST_COSTS_SUCCESS, payload: items.slice(0, 19)})
           }
         }, (error) => {
           console.log(' ERROR: ' + error);
@@ -114,16 +113,16 @@ export class expensesEffects {
         preserveSnapshot: false, query: {
           orderByChild: 'date',
           endAt: this.lastValue,
-          limitToLast: 4,
+          limitToLast: 20,
         }
       })
         .map(v => v.reverse())
         .subscribe(items => {
           this.lastValue = items[items.length - 1].date;
-          if (items.length < 4) {
-            observer.next({type: LOAD_MORE_COSTS_SUCCESS_COMPLETE, payload: items.slice(0, 3)})
+          if (items.length < 20) {
+            observer.next({type: LOAD_MORE_COSTS_SUCCESS_COMPLETE, payload: items.slice(0, 19)})
           } else {
-            observer.next({type: LOAD_MORE_COSTS_SUCCESS, payload: items.slice(0, 3)})
+            observer.next({type: LOAD_MORE_COSTS_SUCCESS, payload: items.slice(0, 19)})
           }
 
         }, (error) => {
@@ -140,13 +139,21 @@ export class expensesEffects {
       return this.filterExpenses(payload)
     });
 
+  formatDate(date: String) {
+    let defDate = date.split('-');
+    return [defDate[2], defDate[1], defDate[0]].join('.')
+  }
+
   filterExpenses(creds) {
+    let startAt = this.formatDate(creds.from);
+    let endAt = this.formatDate(creds.to);
+    console.log(startAt)
     return Observable.create((observer) => {
       this.af.database.list(`/${this.uid}/expenses`, {
         preserveSnapshot: false, query: {
           orderByChild: 'day',
-          startAt: creds.from,
-          endAt: creds.to
+          startAt: this.formatDate(creds.from),
+          endAt: this.formatDate(creds.to)
         }
       })
         .map(v => v.reverse())

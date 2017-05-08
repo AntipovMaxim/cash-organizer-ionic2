@@ -5,6 +5,7 @@ import {Store} from '@ngrx/store'
 import {UPDATE_BALANCE} from '../../reducers/balance.reducer';
 
 import {WrongDataService} from '../../providers/alert.wrong.data';
+import  {CurrencyExchangeService} from '../../providers/currency.exchange';
 import {BalancePage} from '../balance/balance';
 
 @Component({
@@ -13,11 +14,21 @@ import {BalancePage} from '../balance/balance';
 })
 export class CurrencyExchangePage {
   currentBalance: any;
+  currencyEx: Array<any>;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private store: Store<any>,
-              private wrongData: WrongDataService) {
+              private wrongData: WrongDataService,
+              public currencyExServ: CurrencyExchangeService) {
+
+  }
+
+  ionViewWillEnter() {
+    this.currencyExServ.getCurrencyExchangeFromPrivatBank()
+      .then(r => {
+        this.currencyEx = r.slice(0, -1);
+      })
   }
 
   ionViewDidLoad() {
@@ -32,7 +43,7 @@ export class CurrencyExchangePage {
 
 
   doExchange(data) {
-    let newBalance = this.culculateExchange(data.value, this.currentBalance.balance)
+    let newBalance = this.culculateExchange(data.value, this.currentBalance.balance);
     if (!this.wrongData.validateTotalSum(newBalance)) {
       this.wrongData.showAlertError()
     } else {

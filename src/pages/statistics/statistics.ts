@@ -1,6 +1,9 @@
 import {Component} from '@angular/core';
 import {Store} from '@ngrx/store'
 import {DatePicker} from 'ionic-native';
+import {ParseDataService} from '../../providers/parse.data';
+import {CurrencyExchangeService} from '../../providers/currency.exchange';
+
 
 import {FILTER_COSTS} from '../../reducers/expenses.reducer';
 
@@ -19,53 +22,40 @@ export class StatisticsPage {
   tableData;
   totalSum: number = 0;
 
-  constructor(private store: Store<any>,) {
+  myDateFrom: String;
+  myDateTo: String;
 
+  expensesData_;
+
+  constructor(private store: Store<any>, public parseData: ParseDataService, public currencyServ: CurrencyExchangeService) {
+    this.getCurrencyExData();
     this.statistics$ = this.store.select('expenses');
     this.statistics$.subscribe(v => {
-      this.statisticsData = v.expensesStatistics
+      this.statisticsData = v.expensesStatistics;
+      this.myDateFrom = v.from;
+      this.myDateTo = v.to;
+      this.expensesData_ = this.parseData.parseToFinalReportData(v.expensesStatistics);
     });
-
   }
+
 
 
   getExpensesByDate() {
-    this.store.dispatch({type: FILTER_COSTS, payload: {from: this.dateFrom, to: this.dateTo}})
-
+    console.log(this.myDateFrom);
+    console.log(this.myDateTo);
+    this.store.dispatch({type: FILTER_COSTS, payload: {from: this.myDateFrom, to: this.myDateTo}})
   }
 
-  fromDatePicker() {
-    DatePicker.show({
-      date: new Date(),
-      mode: 'date',
-      androidTheme: DatePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
-    }).then(
-      date => this.dateFrom = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`,
-      err => console.log(err)
-    );
-  }
-
-  toDatePicker() {
-    DatePicker.show({
-      date: new Date(),
-      mode: 'date',
-      androidTheme: DatePicker.ANDROID_THEMES.THEME_HOLO_LIGHT
-    }).then(
-      date => this.dateTo = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`,
-      err => console.log(err)
-    );
-  }
 
   ngAfterViewInit() {
     this.statistics$.subscribe(v => {
-      this.optionsData = this.finalData(this.transformDataToObject(v.expensesStatistics))
-      this.tableData = this.finalDataforTable(this.transformDataToObject(v.expensesStatistics))
+      this.optionsData = this.finalData(this.transformDataToObject(v.expensesStatistics));
+      this.tableData = this.finalDataforTable(this.transformDataToObject(v.expensesStatistics));
       this.options = this.getOptions();
     });
   }
 
   getOptions() {
-    console.log(this.optionsData)
     return {
       chart: {
         type: 'pie'
@@ -99,7 +89,8 @@ export class StatisticsPage {
   }
 
   transformDataToObject(arr) {
-    return arr.reduce((accum, cur) => {
+    let array = [...arr];
+    return array.reduce((accum, cur) => {
       accum[cur.category] = Number(cur.money) + (accum[cur.category] ? accum[cur.category] : 0);
       return accum
     }, {})
@@ -107,6 +98,7 @@ export class StatisticsPage {
 
 
   finalData(o) {
+    this.totalSum = 0;
     let arr = [];
     for (let key in o) {
       this.totalSum += o[key];
@@ -121,6 +113,7 @@ export class StatisticsPage {
     console.log('O', o)
     let arr = [];
     let totalSum = 0;
+    console.log('OBJ', o)
     for (let key in o) {
       totalSum += o[key];
     }
@@ -128,6 +121,10 @@ export class StatisticsPage {
       arr.push({category: key, money: o[key]})
     }
     return arr;
+  }
+
+  getCurrencyExData(){
+    this.currencyServ.getCurrencyExchangeFromPrivatBank();
   }
 
 }

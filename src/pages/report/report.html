@@ -1,43 +1,45 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-navbar>
-      <ion-title text-center>Expenses Report</ion-title>
-    </ion-navbar>
-    <ion-buttons end>
-      <button ion-button menuToggle>
-        <ion-icon name="menu"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<!--<ion-header>-->
+  <!--<ion-toolbar>-->
+    <!--<ion-navbar>-->
+      <!--<ion-title text-center>Expenses Report</ion-title>-->
+    <!--</ion-navbar>-->
+    <!--<ion-buttons end>-->
+      <!--<button ion-button menuToggle>-->
+        <!--<ion-icon name="menu"></ion-icon>-->
+      <!--</button>-->
+    <!--</ion-buttons>-->
+  <!--</ion-toolbar>-->
+<!--</ion-header>-->
 
-<ion-content padding>
-  <ion-card>
-    <ion-card-header>
-      Here you can see report of yor expenses
-    </ion-card-header>
-    <ion-card-content>
-    <div>
-      <ion-row responsive-sm>
-        <ion-list>
-          <ion-item *ngFor="let item of (lastExpenses | async)?.expenses">
-            <p><span class="report_category">Category:</span> {{item.category}}</p>
-            <p> <span class="report_money">Amount:</span> {{item.money}} {{item.currency}}</p>
-            <p *ngIf="item.description">Description: {{item.description}}</p>
-            <small>Date: {{item.date | date}}</small>
-          </ion-item>
-        </ion-list>
-      </ion-row>
-    </div>
-    <div *ngIf="(lastExpenses | async)?.expenses.length == 0 && !(lastExpenses | async).loading">
-        There are no expenses... Please add one at least
-    </div>
-      </ion-card-content>
-    <ion-spinner *ngIf="(lastExpenses | async).loading"></ion-spinner>
-    </ion-card>
 
-    <button *ngIf="(lastExpenses | async).loadMoreButton && expensesData.length !== 0" ion-button round
-            (click)="loadMore()"
-          color="primary" block>Load more.. </button>
+<!--<ion-content padding>-->
 
-</ion-content>
+    <!--<h6>-->
+      <!--Here you can see report of yor expenses-->
+    <!--</h6>-->
+
+    <!--<div class="expenses_data">-->
+      <!--<ion-row responsive-lg>-->
+        <!--<ion-list>-->
+          <!--<div *ngFor="let item of expensesData_" >-->
+            <!--<p class="date_balance">Date: {{item.date}}</p>-->
+            <!--<ion-item *ngFor="let source of item.sources" >-->
+              <!--<p><span>{{source.category}} :</span> {{source.money}} {{source.currency}}</p>-->
+              <!--<p *ngIf="source.description"><span>description:</span> {{source.description}}</p>-->
+            <!--</ion-item>-->
+          <!--</div>-->
+        <!--</ion-list>-->
+      <!--</ion-row>-->
+    <!--</div>-->
+    <!--<div *ngIf="(lastExpenses | async)?.expenses.length == 0 && !(lastExpenses | async).loading">-->
+        <!--There are no expenses... Please add one at least-->
+    <!--</div>-->
+
+    <!--<ion-spinner *ngIf="(lastExpenses | async).loading"></ion-spinner>-->
+
+
+    <!--<button *ngIf="(lastExpenses | async).loadMoreButton && expensesData.length !== 0" ion-button round-->
+            <!--(click)="loadMore()"-->
+          <!--color="secondary" block>Load more.. </button>-->
+
+<!--</ion-content>-->
